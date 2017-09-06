@@ -9,6 +9,25 @@ class ArticleController extends Controller
 {
 	public function actionIndex()
 	{
+		$action = Yii::$app->request->get('action');
+
+		switch ($action)
+		{
+			case 'archive':
+				return $this->actionArchive();
+				break;
+
+			case 'viewArticle':
+				return $this->actionArticle();
+				break;
+
+			default:
+				return $this->actionHomepage();
+		}
+	}
+
+	public function actionHomepage()
+	{
 		$articles = Articles::find()->all();
 		return $this->render('index', [
 				'articles' => $articles,
