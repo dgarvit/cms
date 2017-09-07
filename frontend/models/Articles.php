@@ -30,6 +30,11 @@ class Articles extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'summary', 'content'], 'required'],
+            [['id'], 'required', 'when' => function($model) {
+                if ($model->publicationDate)
+                    return true;
+                return false;
+            }],
             [['publicationDate'], 'safe'],
             [['summary', 'content'], 'string'],
             [['title'], 'string', 'max' => 255],

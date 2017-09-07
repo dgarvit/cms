@@ -11,17 +11,7 @@ class ArticleController extends Controller
 {
 	public function actionIndex()
 	{
-		$action = Yii::$app->request->get('action');
-
-		switch ($action)
-		{
-			case 'viewArticle':
-				return $this->actionArticle();
-				break;
-
-			default:
-				return $this->actionHomepage();
-		}
+		return $this->actionHomepage();
 	}
 
 	public function actionHomepage()
@@ -47,7 +37,8 @@ class ArticleController extends Controller
 
 	public function actionCreate()
 	{
-		if (Yii::$app->user->isGuest) {
+		if (Yii::$app->user->isGuest)
+        {
             return $this->actionLogin();
         }
 
@@ -65,7 +56,8 @@ class ArticleController extends Controller
 
 	public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest)
+        {
             return $this->actionList();
         }
 
@@ -88,7 +80,8 @@ class ArticleController extends Controller
 
     public function actionList()
     {
-    	if (Yii::$app->user->isGuest) {
+    	if (Yii::$app->user->isGuest)
+        {
             return $this->actionLogin();
         }
 
@@ -101,23 +94,31 @@ class ArticleController extends Controller
 
     public function actionEdit()
     {
-    	if (Yii::$app->user->isGuest) {
+    	if (Yii::$app->user->isGuest)
+        {
             return $this->actionLogin();
         }
 
         $model = new Articles();
-        if($model->load(Yii::$app->request->post()) && $model->validate()) {
-     		//$model does not have id
-        	$model->update();
-        	return $this->actionList();
+        if($model->load(Yii::$app->request->post()) && $model->validate())
+        {
+        	   $article = Articles::find()->where(['id' => $model->id])->one();
+               $article->title = $model->title;
+               $article->summary = $model->summary;
+               $article->content = $model->content;
+               $article->update();
+
+        	   return $this->actionList();
     	}
 
-    	else {
+    	else
+        {
     		$articleId = Yii::$app->request->get('articleId');
     		$model = Articles::find()->where(['id' => $articleId])->one();
     		if (!$model)
     			Yii::$app->session->setFlash('error', "Article ID does not exist.");
-    		return $this->render('edit', [
+    		
+            return $this->render('edit', [
     			'model' => $model,
     		]);
     	}
@@ -125,7 +126,8 @@ class ArticleController extends Controller
 
     public function actionDelete()
     {
-    	if (Yii::$app->user->isGuest) {
+    	if (Yii::$app->user->isGuest)
+        {
     		return $this->actionLogin();
     	}
 
