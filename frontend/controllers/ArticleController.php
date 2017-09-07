@@ -50,7 +50,7 @@ class ArticleController extends Controller
 		if (Yii::$app->user->isGuest) {
             return $this->actionLogin();
         }
-        
+
 		$model = new Articles();
 		if($model->load(Yii::$app->request->post()) && $model->validate())
 		{
@@ -86,31 +86,6 @@ class ArticleController extends Controller
         return $this->actionIndex();
     }
 
-    public function actionAdmin()
-    {
-    	$action = Yii::$app->request->get('action');
-
-    	switch ($action) {
-    		case 'logout':
-    			return $this->actionLogout();
-    			break;
-
-    		case 'newArticle':
-    			return $this->actionCreate();
-    			break;
-
-    		case 'editArticle':
-    			return $this->actionEdit();
-    			break;
-
-    		case 'deleteArticle':
-    			return $this->actionDelete();
-
-    		default:
-    			return $this->actionList();
-    	}
-    }
-
     public function actionList()
     {
     	if (Yii::$app->user->isGuest) {
@@ -129,10 +104,23 @@ class ArticleController extends Controller
     	if (Yii::$app->user->isGuest) {
             return $this->actionLogin();
         }
-        if($article->load(Yii::$app->request->post()) && $article->validate())
-        	$article->update();
 
-        return $this->actionList();
+        $model = new Articles();
+        if($model->load(Yii::$app->request->post()) && $model->validate()) {
+     		//$model does not have id
+        	$model->update();
+        	return $this->actionList();
+    	}
+
+    	else {
+    		$articleId = Yii::$app->request->get('articleId');
+    		$model = Articles::find()->where(['id' => $articleId])->one();
+    		if (!$model)
+    			Yii::$app->session->setFlash('error', "Article ID does not exist.");
+    		return $this->render('edit', [
+    			'model' => $model,
+    		]);
+    	}
     }
 
     public function actionDelete()

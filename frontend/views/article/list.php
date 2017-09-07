@@ -12,7 +12,7 @@ use yii\helpers\Html;
 		<th>Article</th>
 	</tr>
 	<?php foreach ($articles as $article) { ?>
-		<tr onclick="location='/edit&amp;articleId=<?= $article->id ?>'">
+		<tr onclick="location='/article/edit?articleId=<?= $article->id ?>'">
 			<td><?=date('d-m-Y', strtotime($article->publicationDate)); ?></td>
 			<td><?= Html::encode($article->title) ?></td>
 		</tr>

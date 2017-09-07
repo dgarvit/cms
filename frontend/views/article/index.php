@@ -9,7 +9,7 @@ use yii\helpers\Html;
 	<h4>
 		<li>
 			<?= $article->publicationDate; ?>
-			<a href='.?action=viewArticle&amp;articleId=<?= $article->id; ?>'><?= Html::encode($article->title) ?></a>
+			<a href='/article/article?articleId=<?= $article->id; ?>'><?= Html::encode($article->title) ?></a>
 		</li>
 	</h4>
 	<p>
