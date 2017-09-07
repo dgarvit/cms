@@ -17,5 +17,3 @@ use yii\helpers\Html;
 	</p>
 <?php endforeach ?>
 </ul>
-
-<p><a href="./?action=archive">Article Archive</a></p>

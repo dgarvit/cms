@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use yii\web\Controller;
 use frontend\models\Articles;
+use yii\db\Query;
 use Yii;
 
 class ArticleController extends Controller
@@ -13,10 +14,6 @@ class ArticleController extends Controller
 
 		switch ($action)
 		{
-			case 'archive':
-				return $this->actionArchive();
-				break;
-
 			case 'viewArticle':
 				return $this->actionArticle();
 				break;
@@ -33,6 +30,19 @@ class ArticleController extends Controller
 				'articles' => $articles,
 			]);
 	}
+
+	public function actionArticle()
+	{
+		$articleId = Yii::$app->request->get('articleId');
+		$article = Articles::find()->where(['id' => $articleId])->one();
+		$timestamp = strtotime($article->publicationDate);
+		$date = date('d-m-Y', $timestamp);
+		return $this->render('article', [
+				'article' => $article,
+				'date' => $date,
+			]);
+	}
+
 
 	public function actionCreate()
 	{
