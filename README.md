@@ -3,5 +3,5 @@ A sample cms created on PHP 7 and Yii2 framework.
 
 Features:
 * Role-based access control
-* Add, Edit and Articles
+* Add, Edit and Delete Articles
 * CKEditor
